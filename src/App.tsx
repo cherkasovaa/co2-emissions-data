@@ -4,19 +4,24 @@ import { CountriesList } from './components/CountriesList';
 import { Loading } from './components/Loading';
 import { Modal } from './components/Modal';
 import { Settings } from './components/Settings';
+import { TopBar } from './components/TopBar';
 import { columns as initialColumns } from './config/constants';
 import type { Columns } from './types/columns';
 
 function App() {
   const [openSetting, setOpenSettings] = useState(false);
   const [columns, setColumns] = useState<Columns>(initialColumns);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   return (
     <>
-      <button onClick={() => setOpenSettings(!openSetting)}>Settings</button>
-
+      <TopBar
+        isOpen={openSetting}
+        onChange={setOpenSettings}
+        onSearch={setSearchQuery}
+      />
       <Suspense fallback={<Loading />}>
-        <CountriesList columns={columns} />
+        <CountriesList searchQuery={searchQuery} columns={columns} />
       </Suspense>
 
       <Modal isOpen={openSetting} onClose={() => setOpenSettings(false)}>

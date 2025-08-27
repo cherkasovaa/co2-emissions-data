@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { fetchCO2Data } from '../api/fetchCO2Data';
-import { CountryTable } from './CountryTable';
 import type { Columns } from '../types/columns';
+import { CountryTable } from './CountryTable';
 
-export const CountriesList = ({ columns }: { columns: Columns }) => {
+export const CountriesList = ({
+  searchQuery,
+  columns,
+}: {
+  searchQuery: string;
+  columns: Columns;
+}) => {
   const [activeCountry, setActiveCountry] = useState<string | null>(null);
   const data = fetchCO2Data();
 
@@ -13,8 +19,11 @@ export const CountriesList = ({ columns }: { columns: Columns }) => {
 
   return (
     <ul>
-      {countries &&
-        countries.map((country) => {
+      {countries
+        .filter((country) =>
+          country.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .map((country) => {
           const isoCode = data[country].iso_code;
           const population = data[country].data.at(-1)?.population;
           const isOpen = activeCountry === country;
