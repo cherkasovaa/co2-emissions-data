@@ -1,6 +1,6 @@
-import type { fields } from '../config/constants';
+import type { ColumnName } from '../types/columns';
 
-export type YearlyData = Partial<Record<(typeof fields)[number], number>>;
+export type YearlyData = Partial<Record<ColumnName, number>>;
 
 export interface CountryData {
   iso_code?: string;

@@ -1,24 +1,32 @@
 import { fetchCO2Data } from '../api/fetchCO2Data';
-import { fields } from '../config/constants';
+import type { Columns } from '../types/columns';
 
-export const CountryTable = ({ countryKey }: { countryKey: string }) => {
+export const CountryTable = ({
+  columns,
+  countryKey,
+}: {
+  columns: Columns;
+  countryKey: string;
+}) => {
   const countries = fetchCO2Data();
   const country = countries[countryKey];
+
+  const renderColumns = columns.filter((field) => field.checked);
 
   return (
     <table>
       <thead>
         <tr>
-          {fields.map((field) => (
-            <th key={field}>{field}</th>
+          {renderColumns.map(({ name }) => (
+            <th key={name}>{name}</th>
           ))}
         </tr>
       </thead>
       <tbody>
         {country.data.map((row) => (
           <tr key={row.year}>
-            {fields.map((field) => (
-              <td key={field}>{row[field] ?? 'N/A'}</td>
+            {renderColumns.map(({ name }) => (
+              <td key={name}>{row[name] ?? 'N/A'}</td>
             ))}
           </tr>
         ))}

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { fetchCO2Data } from '../api/fetchCO2Data';
 import { CountryTable } from './CountryTable';
+import type { Columns } from '../types/columns';
 
-export const CountriesList = () => {
+export const CountriesList = ({ columns }: { columns: Columns }) => {
   const [activeCountry, setActiveCountry] = useState<string | null>(null);
   const data = fetchCO2Data();
 
@@ -43,7 +44,9 @@ export const CountriesList = () => {
                 </button>
               </div>
 
-              {isOpen && <CountryTable countryKey={country} />}
+              {isOpen && (
+                <CountryTable columns={columns} countryKey={country} />
+              )}
             </li>
           );
         })}
