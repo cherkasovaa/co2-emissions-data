@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent } from 'react';
+import type { Order, OrderByProperty } from '../types/sort';
 
 export const TopBar = ({
   years,
@@ -6,12 +7,18 @@ export const TopBar = ({
   onChange,
   onSearch,
   onSelect,
+  order,
+  orderBy,
+  onSort,
 }: {
   years: number[];
   isOpen: boolean;
   onChange: (state: boolean) => void;
   onSearch: (_q: string) => void;
   onSelect: (_y: number) => void;
+  order: Order;
+  orderBy: OrderByProperty | null;
+  onSort: (property: OrderByProperty) => void;
 }) => {
   const [searchValue, setSearchValue] = useState<string>('');
 
@@ -26,12 +33,22 @@ export const TopBar = ({
     onSelect(Number(event?.target.value));
   };
 
+  const handleSortBy = (property: OrderByProperty) => {
+    onSort(property);
+  };
+
+  const getSortIcon = (property: OrderByProperty) => {
+    if (orderBy !== property) return '';
+
+    return order === 'asc' ? '↑' : '↓';
+  };
+
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'space-between',
-        gap: '0.5rem',
+        gap: '2rem',
         marginBottom: '2rem',
       }}
     >
@@ -53,6 +70,16 @@ export const TopBar = ({
           </option>
         ))}
       </select>
+
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        Sorting by
+        <button onClick={() => handleSortBy('population')}>
+          Population {getSortIcon('population')}
+        </button>
+        <button onClick={() => handleSortBy('name')}>
+          Name {getSortIcon('name')}
+        </button>
+      </div>
 
       <input
         type="text"
