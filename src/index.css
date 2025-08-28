@@ -63,9 +63,19 @@ table {
   font-size: 0.8rem;
 }
 
-th, td {
+th,
+td {
   border-bottom: 1px solid #cccccc39;
   padding: 0.5rem 1rem;
+}
+
+.highlight {
+  animation: flash 1s ease;
+}
+
+@keyframes flash {
+  from { color: #646cff; }
+  to { color: inherit; }
 }
 
 @media (prefers-color-scheme: light) {

@@ -1,19 +1,21 @@
 import { useState } from 'react';
-import { fetchCO2Data } from '../api/fetchCO2Data';
+import { type CountryData } from '../api/fetchCO2Data';
 import type { Columns } from '../types/columns';
+import { AnimatedElement } from './AnimatedElement';
 import { CountryTable } from './CountryTable';
 
 export const CountriesList = ({
+  data,
   searchQuery,
   columns,
+  selectedYear,
 }: {
+  data: Record<string, CountryData>;
   searchQuery: string;
   columns: Columns;
+  selectedYear: number | undefined;
 }) => {
   const [activeCountry, setActiveCountry] = useState<string | null>(null);
-  const data = fetchCO2Data();
-
-  console.log(data);
 
   const countries = Object.keys(data);
 
@@ -25,7 +27,9 @@ export const CountriesList = ({
         )
         .map((country) => {
           const isoCode = data[country].iso_code;
-          const population = data[country].data.at(-1)?.population;
+          const population = data[country].data.find(
+            (d) => d.year === selectedYear
+          )?.population;
           const isOpen = activeCountry === country;
 
           return (
@@ -37,15 +41,23 @@ export const CountriesList = ({
                 flexDirection: 'column',
                 gap: '2rem',
                 overflow: 'hidden',
+                marginBottom: '0.5rem',
               }}
             >
               <div
                 className="accordion__header"
-                style={{ display: 'flex', gap: '2rem' }}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr) max-content',
+                  alignItems: 'center',
+                  justifyItems: 'start',
+                  gap: '1rem',
+                }}
               >
-                <div>{country}</div>
-                {isoCode && <div>ISO Code: {isoCode}</div>}
-                {population && <div>Population: {population}</div>}
+                <AnimatedElement label="" value={country} />
+                <AnimatedElement label="ISO Code" value={isoCode} />
+                <AnimatedElement label="Population" value={population} />
+
                 <button
                   onClick={() => setActiveCountry(isOpen ? null : country)}
                 >
