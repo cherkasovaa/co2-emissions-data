@@ -33,27 +33,8 @@ export const CountriesList = ({
           const isOpen = activeCountry === country;
 
           return (
-            <li
-              key={country}
-              className="accordion"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '2rem',
-                overflow: 'hidden',
-                marginBottom: '0.5rem',
-              }}
-            >
-              <div
-                className="accordion__header"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr) max-content',
-                  alignItems: 'center',
-                  justifyItems: 'start',
-                  gap: '1rem',
-                }}
-              >
+            <li key={country} className="accordion">
+              <div className="accordion-header">
                 <AnimatedElement label="" value={country} />
                 <AnimatedElement label="ISO Code" value={isoCode} />
                 <AnimatedElement label="Population" value={population} />

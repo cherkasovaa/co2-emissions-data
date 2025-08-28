@@ -44,24 +44,8 @@ export const TopBar = ({
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        gap: '2rem',
-        marginBottom: '2rem',
-      }}
-    >
-      <select
-        name="selectYear"
-        onChange={handleYearChange}
-        style={{
-          padding: '0 1rem',
-          borderRadius: '0.5rem',
-          border: 'none',
-          cursor: 'pointer',
-        }}
-      >
+    <div className="top-bar">
+      <select name="selectYear" onChange={handleYearChange}>
         <option value="">Last Year</option>
 
         {years.map((year) => (
@@ -71,7 +55,7 @@ export const TopBar = ({
         ))}
       </select>
 
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <div className="sort-filter-bar">
         Sorting by
         <button onClick={() => handleSortBy('population')}>
           Population {getSortIcon('population')}
@@ -87,13 +71,6 @@ export const TopBar = ({
         value={searchValue}
         onChange={handleInput}
         placeholder="Search country..."
-        style={{
-          flex: '1',
-          borderRadius: '0.5rem',
-          border: 'none',
-          padding: '0.25rem 1rem',
-          fontSize: '1rem',
-        }}
       />
       <button onClick={() => onChange(!isOpen)}>Settings</button>
     </div>

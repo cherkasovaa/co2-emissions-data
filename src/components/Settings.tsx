@@ -15,14 +15,7 @@ export const Settings = ({
   };
 
   return (
-    <div
-      style={{
-        background: '#F6F6F6',
-        padding: '2rem',
-        borderRadius: '0.5rem',
-        color: '#515151',
-      }}
-    >
+    <div className="settings">
       {columns.map(({ name, checked }) => (
         <div key={name}>
           <input

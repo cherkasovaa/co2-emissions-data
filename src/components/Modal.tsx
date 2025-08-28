@@ -42,22 +42,7 @@ export const Modal = ({
 
   return (
     <Portal>
-      <div
-        onClick={onClose}
-        className="modal-overlay"
-        style={{
-          position: 'fixed',
-          inset: '0',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'rgba(0, 0, 0, 0.5)',
-          transition: 'all 0.3s ease-in-out',
-          overflow: 'hidden',
-          zIndex: '999',
-          padding: '2rem',
-        }}
-      >
+      <div onClick={onClose} className="modal-overlay">
         <div onClick={(event) => event.stopPropagation()} className="modal">
           <div ref={contentRef}>{children}</div>
         </div>
