@@ -14,6 +14,7 @@ export type ColumnName = (typeof fields)[number];
 export interface Column {
   name: ColumnName;
   checked: boolean;
+  required: boolean;
 }
 
 export type Columns = Column[];
