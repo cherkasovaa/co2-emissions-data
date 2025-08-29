@@ -13,12 +13,13 @@ let promise: Promise<Record<string, CountryData>> | null = null;
 export const fetchCO2Data = (): Record<string, CountryData> => {
   if (dataCache) return dataCache;
 
+  console.log('dataCache', dataCache);
+
   if (!promise) {
-    promise = fetch(
-      'https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json'
-    )
+    promise = fetch('/owid-co2-data.json')
       .then((res) => res.json())
       .then((data) => {
+        console.log('data', data);
         dataCache = data;
         return data;
       })
