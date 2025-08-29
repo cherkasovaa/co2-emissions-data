@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { Columns } from '../types/columns';
+import { SettingsCheckbox } from './SettingsCheckbox';
 
 export const Settings = ({
   columns,
@@ -10,40 +11,36 @@ export const Settings = ({
 }) => {
   const [restriction, setRestriction] = useState<boolean>(false);
 
-  const toggle = (field: string) => {
-    const updated = columns.map((col) =>
-      col.name === field ? { ...col, checked: !col.checked } : col
-    );
-    onChange(updated);
-  };
+  const toggle = useCallback(
+    (field: string) => {
+      const updated = columns.map((col) =>
+        col.name === field ? { ...col, checked: !col.checked } : col
+      );
+      onChange(updated);
+    },
+    [columns, onChange]
+  );
 
   return (
     <div className="settings">
-      <div className="restriction">
-        <input
-          type="checkbox"
-          id="restriction"
-          onChange={() => setRestriction(!restriction)}
-          checked={restriction}
-        />
-        <label htmlFor="restriction">removes the disabled state</label>
-      </div>
+      <SettingsCheckbox
+        callback={() => setRestriction(!restriction)}
+        checked={restriction}
+        name={'removes the disabled state'}
+      />
       <h2 className="title">Settings</h2>
 
       {columns.map(({ name, checked, required }) => {
         const isDisabled = !restriction && required;
 
         return (
-          <div key={name}>
-            <input
-              type="checkbox"
-              id={name}
-              onChange={() => toggle(name)}
-              checked={checked}
-              disabled={isDisabled}
-            />
-            <label htmlFor={name}>{name}</label>
-          </div>
+          <SettingsCheckbox
+            key={name}
+            callback={() => toggle(name)}
+            checked={checked}
+            disabled={isDisabled}
+            name={name}
+          />
         );
       })}
     </div>

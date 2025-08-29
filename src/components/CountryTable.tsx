@@ -1,17 +1,24 @@
+import { memo, useMemo } from 'react';
 import { fetchCO2Data } from '../api/fetchCO2Data';
 import type { Columns } from '../types/columns';
+import { TableRow } from './TableRow';
 
-export const CountryTable = ({
-  columns,
-  countryKey,
-}: {
+interface CountryTableProps {
   columns: Columns;
   countryKey: string;
-}) => {
+}
+
+export const CountryTable = memo(function CountryTable({
+  columns,
+  countryKey,
+}: CountryTableProps) {
   const countries = fetchCO2Data();
   const country = countries[countryKey];
 
-  const renderColumns = columns.filter((field) => field.checked);
+  const renderColumns = useMemo(
+    () => columns.filter((field) => field.checked),
+    [columns]
+  );
 
   return (
     <table>
@@ -24,13 +31,9 @@ export const CountryTable = ({
       </thead>
       <tbody>
         {country.data.map((row) => (
-          <tr key={row.year}>
-            {renderColumns.map(({ name }) => (
-              <td key={name}>{row[name] ?? 'N/A'}</td>
-            ))}
-          </tr>
+          <TableRow key={row.year} renderColumns={renderColumns} row={row} />
         ))}
       </tbody>
     </table>
   );
-};
+});

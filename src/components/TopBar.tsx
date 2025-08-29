@@ -1,16 +1,7 @@
-import { useState, type ChangeEvent } from 'react';
+import { memo, useCallback, useState, type ChangeEvent } from 'react';
 import type { Order, OrderByProperty } from '../types/sort';
 
-export const TopBar = ({
-  years,
-  isOpen,
-  onChange,
-  onSearch,
-  onSelect,
-  order,
-  orderBy,
-  onSort,
-}: {
+interface TopBarProps {
   years: number[];
   isOpen: boolean;
   onChange: (state: boolean) => void;
@@ -19,23 +10,43 @@ export const TopBar = ({
   order: Order;
   orderBy: OrderByProperty | null;
   onSort: (property: OrderByProperty) => void;
-}) => {
+}
+
+export const TopBar = memo(function TopBar({
+  years,
+  isOpen,
+  onChange,
+  onSearch,
+  onSelect,
+  order,
+  orderBy,
+  onSort,
+}: TopBarProps) {
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
+  const handleInput = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const query = event.target.value;
 
-    setSearchValue(query);
-    onSearch(query.trim());
-  };
+      setSearchValue(query);
+      onSearch(query.trim());
+    },
+    [onSearch]
+  );
 
-  const handleYearChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onSelect(Number(event?.target.value));
-  };
+  const handleYearChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      onSelect(Number(event?.target.value));
+    },
+    [onSelect]
+  );
 
-  const handleSortBy = (property: OrderByProperty) => {
-    onSort(property);
-  };
+  const handleSortBy = useCallback(
+    (property: OrderByProperty) => {
+      onSort(property);
+    },
+    [onSort]
+  );
 
   const getSortIcon = (property: OrderByProperty) => {
     if (orderBy !== property) return '';
@@ -75,4 +86,4 @@ export const TopBar = ({
       <button onClick={() => onChange(!isOpen)}>Settings</button>
     </div>
   );
-};
+});
